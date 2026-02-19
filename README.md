@@ -1,6 +1,6 @@
 # conductor_for_codex
 
-Portable Conductor-style bootstrap for Codex.
+Portable Conductor-style bootstrap for Codex, using transparent plain markdown skill files.
 
 ## Start Here
 
@@ -15,6 +15,13 @@ This repo uses a two-step model:
 
 The global install gives you reusable skills and a global init command.
 The repo init adds only local project files needed for Conductor-style workflow.
+
+## Transparency
+
+This repo includes skill content as plain markdown files under `skills/`.
+
+- No encoded/base64 skill payloads are used for installation.
+- Both installers copy from `skills/<name>/SKILL.md` so users can inspect everything before running.
 
 ## What Gets Installed
 
@@ -65,8 +72,6 @@ Windows:
 Linux:
 
 - `bash`
-- `base64`
-- `unzip` or `python3`
 
 ## Install on Windows
 
