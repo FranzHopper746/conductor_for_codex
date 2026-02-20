@@ -1,5 +1,4 @@
 ---
-name: update-conductor
 description: Update Codex Conductor prompts from upstream Gemini Conductor changelog
 ---
 <!-- markdownlint-disable MD013 -->
@@ -47,4 +46,3 @@ Local changelog (global Codex home):
 
 - Codex cannot directly update Gemini extensions. This workflow emulates updates by syncing prompt content.
 - Keep Codex-specific rules intact (Conductor local-only, no auto-commit unless explicitly asked).
-

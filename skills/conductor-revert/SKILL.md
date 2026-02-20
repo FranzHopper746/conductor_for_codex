@@ -1,5 +1,4 @@
 ---
-name: conductor-revert
 description: Reverts previous work
 ---
 <!-- markdownlint-disable MD013 -->
@@ -27,6 +26,20 @@ Your workflow MUST anticipate and handle common non-linear Git histories, such a
 **CRITICAL**: The user's explicit confirmation is required at multiple checkpoints. If a user denies a confirmation, the process MUST halt immediately and follow further instructions.
 
 CRITICAL: You must validate the success of every tool call. If any tool call fails, you MUST halt the current operation immediately, announce the failure to the user, and await further instructions.
+
+---
+
+## 1.1 SETUP CHECK
+
+**PROTOCOL: Verify that the Conductor environment is properly set up.**
+
+1. **Verify Core Context:** Using the **Universal File Resolution Protocol**, resolve and verify the existence of the **Tracks Registry**.
+
+2. **Verify Track Exists:** Check if the **Tracks Registry** is not empty.
+
+3. **Handle Failure:** If the file is missing or empty, HALT execution and instruct the user: "The project has not been set up or the tracks file has been corrupted. Please run `/conductor:setup` to set up the plan, or restore the tracks file."
+
+---
 
 ## 2.0 PHASE 1: INTERACTIVE TARGET SELECTION & CONFIRMATION
 
@@ -84,6 +97,34 @@ CRITICAL: You must validate the success of every tool call. If any tool call fai
 
 4. **Halt on Failure:** If no completed items are found to present as options, announce this and halt.
 
+---
+
+## 3.0 PHASE 2: GIT RECONCILIATION & VERIFICATION
+
+**GOAL: Find ALL actual commit(s) in the Git history that correspond to the user's confirmed intent and analyze them.**
+
+1. **Identify Implementation Commits:**
+
+   - Find the primary SHA(s) for all tasks and phases recorded in the target's **Implementation Plan**.
+   - **Handle "Ghost" Commits (Rewritten History):** If a SHA from a plan is not found in Git, announce this. Search the Git log for a commit with a highly similar message and ask the user to confirm it as the replacement. If not confirmed, halt.
+
+2. **Identify Associated Plan-Update Commits:**
+
+   - For each validated implementation commit, use `git log` to find the corresponding plan-update commit that happened _after_ it and modified the relevant **Implementation Plan** file.
+
+3. **Identify the Track Creation Commit (Track Revert Only):**
+
+   - **IF** the user's intent is to revert an entire track, you MUST perform this additional step.
+   - **Method:** Use `git log -- <path_to_tracks_registry>` (resolved via protocol) and search for the commit that first introduced the track entry.
+     - Look for lines matching either `- [ ] **Track: <Track Description>**` (new format) OR `## [ ] Track: <Track Description>` (legacy format).
+   - Add this "track creation" commit's SHA to the list of commits to be reverted.
+
+4. **Compile and Analyze Final List:**
+   - Compile a final, comprehensive list of **all SHAs to be reverted**.
+   - For each commit in the final list, check for complexities like merge commits and warn about any cherry-pick duplicates.
+
+---
+
 ## 4.0 PHASE 3: FINAL EXECUTION PLAN CONFIRMATION
 
 **GOAL: Present a clear, final plan of action to the user before modifying anything.**
@@ -113,4 +154,3 @@ CRITICAL: You must validate the success of every tool call. If any tool call fai
 2. **Handle Conflicts:** If any revert command fails due to a merge conflict, halt and provide the user with clear instructions for manual resolution.
 3. **Verify Plan State:** After all reverts succeed, read the relevant **Implementation Plan** file(s) again to ensure the reverted item has been correctly reset. If not, perform a file edit to fix it and commit the correction.
 4. **Announce Completion:** Inform the user that the process is complete and the plan is synchronized.
-

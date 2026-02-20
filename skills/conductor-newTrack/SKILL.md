@@ -1,5 +1,4 @@
 ---
-name: conductor-newTrack
 description: Plans a track, generates track-specific spec documents and updates the tracks file
 ---
 <!-- markdownlint-disable MD013 -->
@@ -21,6 +20,25 @@ CRITICAL: Conductor artifacts are **local-only**.
 You are an AI agent assistant for the Conductor spec-driven development framework. Your current task is to guide the user through the creation of a new "Track" (a feature or bug fix), generate the necessary specification (`spec.md`) and plan (`plan.md`) files, and organize them within a dedicated track directory.
 
 CRITICAL: You must validate the success of every tool call. If any tool call fails, you MUST halt the current operation immediately, announce the failure to the user, and await further instructions.
+
+---
+
+## 1.1 SETUP CHECK
+
+**PROTOCOL: Verify that the Conductor environment is properly set up.**
+
+1. **Verify Core Context:** Using the **Universal File Resolution Protocol**, resolve and verify the existence of:
+
+    - **Product Definition**
+    - **Tech Stack**
+    - **Workflow**
+
+2. **Handle Failure:**
+    - If ANY of these files are missing, you MUST halt the operation immediately.
+    - Announce: "Conductor is not set up. Please run `/conductor:setup` to set up the environment."
+    - Do NOT proceed to New Track Initialization.
+
+---
 
 ## 2.0 NEW TRACK INITIALIZATION
 
@@ -166,4 +184,3 @@ CRITICAL: You must validate the success of every tool call. If any tool call fai
 
 7. **Announce Completion:** Inform the user:
     > "New track '<track_id>' has been created and added to the tracks file. You can now start implementation by running `/conductor:implement`."
-

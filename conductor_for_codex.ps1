@@ -77,6 +77,7 @@ Ensure-Dir (Join-Path $CodexHome 'skills')
 
 $scriptDir = if ($PSScriptRoot) { $PSScriptRoot } else { Split-Path -Parent $MyInvocation.MyCommand.Path }
 $bundledSkillsRoot = Join-Path $scriptDir 'skills'
+$bundledTemplatesRoot = Join-Path $scriptDir 'templates'
 $skillNames = @('conductor-setup','conductor-status','conductor-implement','conductor-newTrack','conductor-revert','update-conductor')
 
 if (-not (Test-Path $bundledSkillsRoot)) {
@@ -100,6 +101,20 @@ foreach ($name in $skillNames) {
   Ensure-Dir $dstDir
   Copy-Item -Path $srcFile -Destination $dstFile -Force
   Write-Host "  Installed: $dstDir" -ForegroundColor Green
+}
+
+# Install Conductor templates (skip if destination exists)
+if (Test-Path $bundledTemplatesRoot) {
+  $dstTemplatesRoot = Join-Path $CodexHome 'conductor\templates'
+  if (Test-Path $dstTemplatesRoot) {
+    Write-Host "  Exists, skipping templates: $dstTemplatesRoot" -ForegroundColor Gray
+  } else {
+    Ensure-Dir $dstTemplatesRoot
+    Copy-Item -Recurse -Force -Path (Join-Path $bundledTemplatesRoot '*') -Destination $dstTemplatesRoot
+    Write-Host "  Installed templates: $dstTemplatesRoot" -ForegroundColor Green
+  }
+} else {
+  Write-Host "  Missing bundled templates directory (skipping): $bundledTemplatesRoot" -ForegroundColor Yellow
 }
 
 # Plain-text init script for auditability.
@@ -162,6 +177,20 @@ foreach ($name in $skillNames) {
 
   Copy-Item -Recurse -Force -Path $src -Destination $dst
   Write-Host "  Installed: .codex\skills\$name" -ForegroundColor Green
+}
+
+$srcTemplatesRoot = Join-Path $CodexHome 'conductor\templates'
+$dstTemplatesRoot = Join-Path $RepoRoot 'conductor\templates'
+if (Test-Path $srcTemplatesRoot) {
+  if (Test-Path $dstTemplatesRoot) {
+    Write-Host "  Exists, skipping: conductor\\templates" -ForegroundColor Gray
+  } else {
+    Ensure-Dir $dstTemplatesRoot
+    Copy-Item -Recurse -Force -Path (Join-Path $srcTemplatesRoot '*') -Destination $dstTemplatesRoot
+    Write-Host "  Installed: conductor\\templates" -ForegroundColor Green
+  }
+} else {
+  Write-Host "  NOTE: Missing templates at $srcTemplatesRoot (re-run conductor_for_codex.ps1)" -ForegroundColor Yellow
 }
 
 $agentsRule = 'Always run $conductor-status before doing anything else.'

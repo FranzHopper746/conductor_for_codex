@@ -50,6 +50,19 @@ That gives you a simple pattern:
 2. Run repo init where needed.
 3. Start with `$conductor-status` and work from current project state.
 
+## Commands (Codex Skills)
+
+This repo installs these commands/skills into Codex. The exact behavior is defined by the `skills/*/SKILL.md` files.
+
+| Command | What it does | Reads/Writes (typical) |
+| --- | --- | --- |
+| `$conductor-setup` | Guided project setup: defines product docs, chooses style guides, and configures workflow. | Writes `conductor/product.md`, `conductor/product-guidelines.md`, `conductor/tech-stack.md`, `conductor/workflow.md`, `conductor/code_styleguides/`, `conductor/tracks.md`, `conductor/setup_state.json` |
+| `$conductor-status` | Status overview of your current tracks and active work. | Reads `conductor/tracks.md` and linked track plans |
+| `$conductor-newTrack` | Create a new track with an interactive `spec.md` and `plan.md`, then register it. | Writes `conductor/tracks/<track_id>/*` and appends to `conductor/tracks.md` |
+| `$conductor-implement` | Implement tasks from the selected track plan in order. | Reads `conductor/tracks.md`, `conductor/tracks/<id>/plan.md`, `conductor/workflow.md`; updates plan/tracks statuses as it progresses |
+| `$conductor-revert` | Revert a track/phase/task by analyzing git history and Conductor artifacts. | Reads tracks/plans; performs git reverts per the selected scope |
+| `$update-conductor` | Update Conductor prompts/skills based on upstream changes (if configured). | Updates local skill content (varies by setup) |
+
 ## Credit
 
 This project is directly inspired by the original Gemini Conductor approach.

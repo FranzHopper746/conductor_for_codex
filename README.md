@@ -18,7 +18,10 @@ The repo init adds only local project files needed for Conductor-style workflow.
 
 ## Transparency
 
-This repo includes skill content as plain markdown files under `skills/`.
+This repo includes:
+
+- Skill content as plain markdown files under `skills/`
+- Conductor templates under `templates/` (workflow + code style guides)
 
 - No encoded/base64 skill payloads are used for installation.
 - Both installers copy from `skills/<name>/SKILL.md` so users can inspect everything before running.
@@ -34,6 +37,9 @@ Global install (user profile, offline):
   - `conductor-newTrack`
   - `conductor-revert`
   - `update-conductor`
+- Templates in global Codex home:
+  - Windows: `%USERPROFILE%\.codex\conductor\templates\...`
+  - Linux: `$HOME/.codex/conductor/templates/...`
 - Global init command:
   - Windows: `%USERPROFILE%\.codex\bin\codex_conductor_init.cmd`
   - Linux: `$HOME/.local/bin/codex_conductor_init`
@@ -43,10 +49,16 @@ Global install (user profile, offline):
 When you run repo init, it creates/updates local files in that repo:
 
 - `.codex/skills/<skill>/SKILL.md` (copied from global install)
+- `conductor/templates/...` (copied from global templates; non-destructive)
 - `AGENTS.md` rule line:
   - `Always run $conductor-status before doing anything else.`
 - `.gitignore` line:
   - `conductor/`
+
+### Why there are two styleguide locations?
+
+- `conductor/templates/code_styleguides/` is the **template library** (the available guides to choose from).
+- `conductor/code_styleguides/` is the **active project guides** created during `$conductor-setup`.
 
 ## Safety (Non-Destructive by Design)
 
@@ -170,6 +182,11 @@ your-repo/
         SKILL.md
       update-conductor/
         SKILL.md
+  conductor/
+    templates/
+      workflow.md
+      code_styleguides/
+        *.md
   AGENTS.md
   .gitignore
 ```
@@ -180,6 +197,11 @@ Global install on Windows:
 %USERPROFILE%\.codex\
   skills\
     (same 6 skill folders)
+  conductor\
+    templates\
+      workflow.md
+      code_styleguides\
+        *.md
   bin\
     codex_conductor_init.cmd
     codex_conductor_init.ps1
@@ -191,6 +213,11 @@ Global install on Linux:
 $HOME/.codex/
   skills/
     (same 6 skill folders)
+  conductor/
+    templates/
+      workflow.md
+      code_styleguides/
+        *.md
 $HOME/.local/bin/
   codex_conductor_init
 ```

@@ -27,6 +27,7 @@ NO_PATH_HINT="${NO_PATH_HINT:-0}"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BUNDLED_SKILLS_ROOT="$SCRIPT_DIR/skills"
+BUNDLED_TEMPLATES_ROOT="$SCRIPT_DIR/templates"
 
 echo "==========================================="
 echo "  Conductor for Codex - Installer (Linux)"
@@ -59,6 +60,19 @@ for s in conductor-setup conductor-status conductor-implement conductor-newTrack
     echo "  Installed: $dst_dir"
   fi
 done
+
+# Install templates (skip if destination exists)
+if [[ -d "$BUNDLED_TEMPLATES_ROOT" ]]; then
+  if [[ -e "$CODEX_HOME/conductor/templates" ]]; then
+    echo "  Exists, skipping templates: $CODEX_HOME/conductor/templates"
+  else
+    mkdir -p "$CODEX_HOME/conductor/templates"
+    cp -a "$BUNDLED_TEMPLATES_ROOT"/. "$CODEX_HOME/conductor/templates/"
+    echo "  Installed templates: $CODEX_HOME/conductor/templates"
+  fi
+else
+  echo "  Missing bundled templates directory (skipping): $BUNDLED_TEMPLATES_ROOT"
+fi
 
 # Install init command only if missing
 if [[ -e "$BIN_DIR/codex_conductor_init" ]]; then
@@ -96,6 +110,19 @@ for s in "${skill_names[@]}"; do
   cp -a "$src" "$dst"
   echo "  Installed: .codex/skills/$s"
 done
+
+# Install Conductor templates (non-destructive)
+if [[ -d "$CODEX_HOME/conductor/templates" ]]; then
+  if [[ -e "$REPO_ROOT/conductor/templates" ]]; then
+    echo "  Exists, skipping: conductor/templates"
+  else
+    mkdir -p "$REPO_ROOT/conductor/templates"
+    cp -a "$CODEX_HOME/conductor/templates"/. "$REPO_ROOT/conductor/templates/"
+    echo "  Installed: conductor/templates"
+  fi
+else
+  echo "  NOTE: Missing templates at $CODEX_HOME/conductor/templates (re-run conductor_for_codex.sh)"
+fi
 
 rule_line='Always run $conductor-status before doing anything else.'
 if [[ -e "$REPO_ROOT/AGENTS.md" ]]; then
