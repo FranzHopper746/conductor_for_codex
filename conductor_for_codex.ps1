@@ -133,16 +133,6 @@ function Ensure-Dir([string] $path) {
   }
 }
 
-function Ensure-GitignoreHas([string] $path, [string] $line) {
-  if (-not (Test-Path $path)) {
-    Set-Content -Path $path -Value ($line + "`r`n") -Encoding UTF8
-    return
-  }
-  $lines = Get-Content $path
-  if ($lines -contains $line) { return }
-  Add-Content -Path $path -Value $line
-}
-
 function Ensure-AgentsRule([string] $path, [string] $rule) {
   if (-not (Test-Path $path)) {
     Set-Content -Path $path -Value ("# AGENTS.md`r`n`r`n" + $rule + "`r`n") -Encoding UTF8
@@ -196,8 +186,7 @@ if (Test-Path $srcTemplatesRoot) {
 $agentsRule = 'Always run $conductor-status before doing anything else.'
 Ensure-AgentsRule -path (Join-Path $RepoRoot 'AGENTS.md') -rule $agentsRule
 
-Ensure-GitignoreHas -path (Join-Path $RepoRoot '.gitignore') -line 'conductor/'
-Write-Host "  Ensured .gitignore contains conductor/" -ForegroundColor Green
+
 
 Write-Host ""
 Write-Host "Next:" -ForegroundColor White

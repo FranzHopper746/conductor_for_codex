@@ -52,8 +52,6 @@ When you run repo init, it creates/updates local files in that repo:
 - `conductor/templates/...` (copied from global templates; non-destructive)
 - `AGENTS.md` rule line:
   - `Always run $conductor-status before doing anything else.`
-- `.gitignore` line:
-  - `conductor/`
 
 ### Why there are two styleguide locations?
 
@@ -69,9 +67,6 @@ This setup is intentionally non-destructive:
 - For `AGENTS.md`:
   - If missing, create it.
   - If present, append the required conductor-status rule only if missing.
-- For `.gitignore`:
-  - If missing, create it.
-  - If present, append `conductor/` only if missing.
 
 In short: append-only when needed, no destructive replacement.
 
@@ -188,7 +183,6 @@ your-repo/
       code_styleguides/
         *.md
   AGENTS.md
-  .gitignore
 ```
 
 Global install on Windows:

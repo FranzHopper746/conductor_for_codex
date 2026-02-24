@@ -1,4 +1,5 @@
 ---
+name: conductor-implement
 description: Executes the tasks defined in the specified track's plan
 ---
 <!-- markdownlint-disable MD013 -->
@@ -9,11 +10,8 @@ description: Executes the tasks defined in the specified track's plan
 $ARGUMENTS
 ```
 
-CRITICAL: Conductor artifacts are **local-only**.
-
 - You MUST NOT modify anything outside the repository root.
-- Ensure that the `.gitignore` file includes the `conductor/` directory. Do not remove `conductor/` from the ignore rules. If the `conductor/` directory is not already listed in `.gitignore`, add it to the file.
-- You MUST NOT `git add`/`git commit` Conductor artifacts unless the user explicitly requests it.
+- You MUST `git add`/`git commit` Conductor artifacts as part of the project.
 
 ## 1.0 SYSTEM DIRECTIVE
 

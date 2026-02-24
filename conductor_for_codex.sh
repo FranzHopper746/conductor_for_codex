@@ -145,18 +145,6 @@ AGENTS_EOF
   echo "  Created AGENTS.md"
 fi
 
-# Ensure conductor/ ignore exists (no duplicates if grep is available)
-if [[ ! -f "$REPO_ROOT/.gitignore" ]]; then
-  echo "conductor/" >"$REPO_ROOT/.gitignore"
-elif command -v grep >/dev/null 2>&1; then
-  if ! grep -qx "conductor/" "$REPO_ROOT/.gitignore"; then
-    echo "conductor/" >>"$REPO_ROOT/.gitignore"
-  fi
-else
-  echo "conductor/" >>"$REPO_ROOT/.gitignore" || true
-fi
-
-echo "  Ensured .gitignore contains conductor/"
 INIT_EOF
   chmod +x "$BIN_DIR/codex_conductor_init"
   echo "  Created: $BIN_DIR/codex_conductor_init"
