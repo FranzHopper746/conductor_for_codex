@@ -42,7 +42,7 @@ fi
 mkdir -p "$CODEX_HOME/skills" "$BIN_DIR"
 
 # Install skills one-by-one (overwrite if destination exists)
-for s in conductor-setup conductor-status conductor-implement conductor-newTrack conductor-revert update-conductor; do
+for s in conductor-setup conductor-status conductor-implement conductor-newTrack conductor-revert conductor-review update-conductor; do
   src_file="$BUNDLED_SKILLS_ROOT/$s/SKILL.md"
   dst_dir="$CODEX_HOME/skills/$s"
   dst_file="$dst_dir/SKILL.md"
@@ -87,7 +87,7 @@ set -euo pipefail
 REPO_ROOT="${1:-$(pwd)}"
 CODEX_HOME="${CODEX_HOME:-$HOME/.codex}"
 
-skill_names=(conductor-setup conductor-status conductor-implement conductor-newTrack conductor-revert update-conductor)
+skill_names=(conductor-setup conductor-status conductor-implement conductor-newTrack conductor-revert conductor-review update-conductor)
 
 mkdir -p "$REPO_ROOT/.codex/skills"
 
