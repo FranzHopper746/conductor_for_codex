@@ -4,8 +4,8 @@
 #
 # Offline installer for Codex + Conductor skills (no network).
 # Non-destructive by default:
-# - Does NOT delete files.
-# - Does NOT overwrite existing files/folders.
+# - Does NOT delete user project files.
+# - Overwrites existing files/folders to ensure updates are applied.
 #
 # Installs into your HOME by default (no sudo):
 #   $HOME/.codex/skills/<skill>/SKILL.md
@@ -41,7 +41,7 @@ fi
 
 mkdir -p "$CODEX_HOME/skills" "$BIN_DIR"
 
-# Install skills one-by-one (skip if destination exists)
+# Install skills one-by-one (overwrite if destination exists)
 for s in conductor-setup conductor-status conductor-implement conductor-newTrack conductor-revert update-conductor; do
   src_file="$BUNDLED_SKILLS_ROOT/$s/SKILL.md"
   dst_dir="$CODEX_HOME/skills/$s"
@@ -52,24 +52,16 @@ for s in conductor-setup conductor-status conductor-implement conductor-newTrack
     exit 1
   fi
 
-  if [[ -e "$dst_dir" ]]; then
-    echo "  Exists, skipping: $dst_dir"
-  else
-    mkdir -p "$dst_dir"
-    cp -a "$src_file" "$dst_file"
-    echo "  Installed: $dst_dir"
-  fi
+  mkdir -p "$dst_dir"
+  cp -a "$src_file" "$dst_file"
+  echo "  Installed: $dst_dir"
 done
 
-# Install templates (skip if destination exists)
+# Install templates (overwrite if destination exists)
 if [[ -d "$BUNDLED_TEMPLATES_ROOT" ]]; then
-  if [[ -e "$CODEX_HOME/conductor/templates" ]]; then
-    echo "  Exists, skipping templates: $CODEX_HOME/conductor/templates"
-  else
-    mkdir -p "$CODEX_HOME/conductor/templates"
-    cp -a "$BUNDLED_TEMPLATES_ROOT"/. "$CODEX_HOME/conductor/templates/"
-    echo "  Installed templates: $CODEX_HOME/conductor/templates"
-  fi
+  mkdir -p "$CODEX_HOME/conductor/templates"
+  cp -a "$BUNDLED_TEMPLATES_ROOT"/. "$CODEX_HOME/conductor/templates/"
+  echo "  Installed templates: $CODEX_HOME/conductor/templates"
 else
   echo "  Missing bundled templates directory (skipping): $BUNDLED_TEMPLATES_ROOT"
 fi
@@ -83,8 +75,8 @@ else
 # codex_conductor_init
 #
 # Non-destructive by default:
-# - Does NOT delete files.
-# - Does NOT overwrite existing files/folders.
+# - Does NOT delete user project files.
+# - Overwrites existing files/folders to ensure updates.
 #
 # Usage:
 #   codex_conductor_init            # initializes current directory
@@ -103,23 +95,15 @@ for s in "${skill_names[@]}"; do
   src="$CODEX_HOME/skills/$s"
   dst="$REPO_ROOT/.codex/skills/$s"
   [[ -d "$src" ]] || { echo "Missing installed skill: $src"; exit 1; }
-  if [[ -e "$dst" ]]; then
-    echo "  Exists, skipping: .codex/skills/$s"
-    continue
-  fi
   cp -a "$src" "$dst"
   echo "  Installed: .codex/skills/$s"
 done
 
-# Install Conductor templates (non-destructive)
+# Install Conductor templates (overwrites existing files)
 if [[ -d "$CODEX_HOME/conductor/templates" ]]; then
-  if [[ -e "$REPO_ROOT/conductor/templates" ]]; then
-    echo "  Exists, skipping: conductor/templates"
-  else
-    mkdir -p "$REPO_ROOT/conductor/templates"
-    cp -a "$CODEX_HOME/conductor/templates"/. "$REPO_ROOT/conductor/templates/"
-    echo "  Installed: conductor/templates"
-  fi
+  mkdir -p "$REPO_ROOT/conductor/templates"
+  cp -a "$CODEX_HOME/conductor/templates"/. "$REPO_ROOT/conductor/templates/"
+  echo "  Installed: conductor/templates"
 else
   echo "  NOTE: Missing templates at $CODEX_HOME/conductor/templates (re-run conductor_for_codex.sh)"
 fi

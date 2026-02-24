@@ -4,8 +4,8 @@
 
 .DESCRIPTION
   Non-destructive by default:
-  - Does NOT delete files.
-  - Does NOT overwrite existing skill folders or init scripts.
+  - Does NOT delete user project files.
+  - Overwrites existing skill folders or init scripts to ensure updates.
 
   Installs into your user profile (no admin required):
   - Skills: %USERPROFILE%\.codex\skills\<skill>\SKILL.md
@@ -93,26 +93,17 @@ foreach ($name in $skillNames) {
   $dstDir = Join-Path (Join-Path $CodexHome 'skills') $name
   $dstFile = Join-Path $dstDir 'SKILL.md'
 
-  if (Test-Path $dstDir) {
-    Write-Host "  Exists, skipping: $dstDir" -ForegroundColor Gray
-    continue
-  }
-
   Ensure-Dir $dstDir
   Copy-Item -Path $srcFile -Destination $dstFile -Force
   Write-Host "  Installed: $dstDir" -ForegroundColor Green
 }
 
-# Install Conductor templates (skip if destination exists)
+# Install Conductor templates (overwrite if destination exists)
 if (Test-Path $bundledTemplatesRoot) {
   $dstTemplatesRoot = Join-Path $CodexHome 'conductor\templates'
-  if (Test-Path $dstTemplatesRoot) {
-    Write-Host "  Exists, skipping templates: $dstTemplatesRoot" -ForegroundColor Gray
-  } else {
-    Ensure-Dir $dstTemplatesRoot
-    Copy-Item -Recurse -Force -Path (Join-Path $bundledTemplatesRoot '*') -Destination $dstTemplatesRoot
-    Write-Host "  Installed templates: $dstTemplatesRoot" -ForegroundColor Green
-  }
+  Ensure-Dir $dstTemplatesRoot
+  Copy-Item -Recurse -Force -Path (Join-Path $bundledTemplatesRoot '*') -Destination $dstTemplatesRoot
+  Write-Host "  Installed templates: $dstTemplatesRoot" -ForegroundColor Green
 } else {
   Write-Host "  Missing bundled templates directory (skipping): $bundledTemplatesRoot" -ForegroundColor Yellow
 }
@@ -160,11 +151,6 @@ foreach ($name in $skillNames) {
   if (-not (Test-Path $src)) { throw "Missing installed skill: $src" }
 
   $dst = Join-Path $dstSkillsRoot $name
-  if (Test-Path $dst) {
-    Write-Host "  Exists, skipping: .codex\skills\$name" -ForegroundColor Gray
-    continue
-  }
-
   Copy-Item -Recurse -Force -Path $src -Destination $dst
   Write-Host "  Installed: .codex\skills\$name" -ForegroundColor Green
 }
@@ -172,13 +158,9 @@ foreach ($name in $skillNames) {
 $srcTemplatesRoot = Join-Path $CodexHome 'conductor\templates'
 $dstTemplatesRoot = Join-Path $RepoRoot 'conductor\templates'
 if (Test-Path $srcTemplatesRoot) {
-  if (Test-Path $dstTemplatesRoot) {
-    Write-Host "  Exists, skipping: conductor\\templates" -ForegroundColor Gray
-  } else {
-    Ensure-Dir $dstTemplatesRoot
-    Copy-Item -Recurse -Force -Path (Join-Path $srcTemplatesRoot '*') -Destination $dstTemplatesRoot
-    Write-Host "  Installed: conductor\\templates" -ForegroundColor Green
-  }
+  Ensure-Dir $dstTemplatesRoot
+  Copy-Item -Recurse -Force -Path (Join-Path $srcTemplatesRoot '*') -Destination $dstTemplatesRoot
+  Write-Host "  Installed: conductor\\templates" -ForegroundColor Green
 } else {
   Write-Host "  NOTE: Missing templates at $srcTemplatesRoot (re-run conductor_for_codex.ps1)" -ForegroundColor Yellow
 }
