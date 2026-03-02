@@ -31,7 +31,7 @@ CRITICAL: You must validate the success of every tool call. If any tool call fai
     - **Tech Stack**
     - **Workflow**
 
-2. **Handle Failure:** If ANY of these are missing (or their resolved paths do not exist), Announce: "Conductor is not set up. Please run `/conductor:setup`." and HALT.
+2. **Handle Failure:** If ANY of these are missing (or their resolved paths do not exist), Announce: "Conductor is not set up. Please run `$conductor-setup`." and HALT.
 
 ---
 
@@ -39,7 +39,7 @@ CRITICAL: You must validate the success of every tool call. If any tool call fai
 
 **PROTOCOL: Identify and select the track to be implemented.**
 
-1. **Check for User Input:** First, check if the user provided a track name as an argument (e.g., `/conductor:implement <track_description>`).
+1. **Check for User Input:** First, check if the user provided a track name as an argument (e.g., `$conductor-implement <track_description>`).
 
 2. **Locate and Parse Tracks Registry:**
 

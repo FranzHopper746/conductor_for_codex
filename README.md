@@ -38,6 +38,7 @@ Global install (user profile, offline):
   - `conductor-revert`
   - `conductor-review`
   - `conductor-check-upstream`
+  - `conductor-context`
   - `update-conductor`
 - Templates in global Codex home:
   - Windows: `%USERPROFILE%\.codex\conductor\templates\...`
@@ -76,6 +77,7 @@ In short: append-only when needed, no destructive replacement.
 
 This port of Conductor to the Codex CLI includes several features to improve developer experience:
 - **Interactive Review:** The `conductor-review` skill helps ensure code modifications adhere to defined style guides and planning documents before completion.
+- **Context Loader:** The `conductor-context` skill lets you load track progress and global guidelines into your agent memory so you can answer queries dynamically, without invoking code generation.
 - **Workflow Automation:** The `conductor-newTrack` skill automatically commits its tracking artifacts (`plan.md`, `spec.md`, `metadata.json`) generated post-scaffolding to maintain repository hygiene.
 - **Upkeep Helper:** `conductor-check-upstream` allows repository maintainers to quickly check for updates from the original Gemini Conductor repository and port them over as needed.
 
@@ -188,6 +190,8 @@ your-repo/
         SKILL.md
       conductor-check-upstream/
         SKILL.md
+      conductor-context/
+        SKILL.md
       update-conductor/
         SKILL.md
   conductor/
@@ -203,7 +207,7 @@ Global install on Windows:
 ```text
 %USERPROFILE%\.codex\
   skills\
-    (all 8 skill folders)
+    (all 9 skill folders)
   conductor\
     templates\
       workflow.md

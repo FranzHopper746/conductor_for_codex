@@ -58,7 +58,7 @@ CRITICAL: When determining model complexity, Favor  deep reasoning. Context driv
    - If `STEP` is "2.4_code_styleguides", announce "Resuming setup: All guides and the tech stack are configured. Next, we will define the project workflow." and proceed to **Section 2.5**.
    - If `STEP` is "2.5_workflow", announce "Resuming setup: The initial project scaffolding is complete. Next, we will generate the first track." and proceed to **Phase 2 (3.0)**.
    - If `STEP` is "3.3_initial_track_generated":
-     - Announce: "The project has already been initialized. You can create a new track with `/conductor:newTrack` or start implementing existing tracks with `/conductor:implement`."
+     - Announce: "The project has already been initialized. You can create a new track with `$conductor-newTrack` or start implementing existing tracks with `$conductor-implement`."
      - Halt the `setup` process.
    - If `STEP` is unrecognized, announce an error and halt.
 
@@ -375,7 +375,8 @@ CRITICAL: When determining model complexity, Favor  deep reasoning. Context driv
 2. **Summarize Actions:** Present a summary of all actions taken during Phase 1, including:
    - The guide files that were copied.
    - The workflow file that was copied.
-3. **Transition to initial plan and track generation:** Announce that the initial setup is complete and you will now proceed to define the first track for the project.
+3. **Save Conductor Setup:** Stage the `conductor/` directory, `AGENTS.md`, and any other tracking files, then commit them with the commit message `conductor(setup): Initialize conductor environment`.
+4. **Transition to initial plan and track generation:** Announce that the initial setup is complete and you will now proceed to define the first track for the project.
 
 ---
 
@@ -497,6 +498,6 @@ CRITICAL: When determining model complexity, Favor  deep reasoning. Context driv
 
 ### 3.4 Final Announcement
 
-1. **Announce Completion:** After the track has been created, announce that the project setup and initial track generation are complete.
-2. **Save Conductor Files:** Add and commit all files with the commit message `conductor(setup): Add conductor setup files`.
-3. **Next Steps:** Inform the user that they can now begin work by running `/conductor:implement`.
+1. **Commit Track Files:** Stage the **Tracks Registry** and the newly created track directory, then commit with the message `chore(conductor): Add initial track '<track_description>'`.
+2. **Announce Completion:** Announce that the project setup and initial track generation are complete.
+3. **Next Steps:** Inform the user that they can now begin work by running `$conductor-implement`.
