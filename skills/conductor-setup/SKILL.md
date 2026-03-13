@@ -42,12 +42,14 @@ CRITICAL: When determining model complexity, Favor  deep reasoning. Context driv
 
 **PROTOCOL: Before starting the setup, determine the project's state using the state file.**
 
-1. **Read State File:** Check for the existence of `conductor/setup_state.json`.
+1. **Announce Resume Check:** Inform the user that you are checking the project for any existing Conductor configuration.
+
+2. **Read State File:** Check for the existence of `conductor/setup_state.json`.
 
    - If it does not exist, this is a new project setup. Proceed directly to Step 1.2.
    - If it exists, read its content.
 
-2. **Resume Based on State:**
+3. **Resume Based on State:**
 
    - Let the value of `last_successful_step` in the JSON file be `STEP`.
    - Based on the value of `STEP`, jump to the **next logical section**:
