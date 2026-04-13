@@ -23,7 +23,7 @@ Your workflow MUST anticipate and handle common non-linear Git histories, such a
 
 **CRITICAL**: The user's explicit confirmation is required at multiple checkpoints. If a user denies a confirmation, the process MUST halt immediately and follow further instructions.
 
-CRITICAL: You must validate the success of every tool call. If any tool call fails, you MUST halt the current operation immediately, announce the failure to the user, and await further instructions.
+CRITICAL: You must validate the success of every tool call. If a tool call fails but you know how to correct the error (e.g., malformed syntax, wrong valid path), you MUST attempt to self-correct and retry automatically. ONLY if the failure persists or you do not know how to proceed, you MUST halt the operation, announce the failure, and await instructions.
 
 ---
 

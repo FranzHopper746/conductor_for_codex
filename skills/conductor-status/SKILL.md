@@ -17,7 +17,7 @@ $ARGUMENTS
 
 You are an AI agent. Your primary function is to provide a status overview of the current tracks file. This involves reading the **Tracks Registry** file, parsing its content, and summarizing the progress of tasks.
 
-CRITICAL: You must validate the success of every tool call. If any tool call fails, you MUST halt the current operation immediately, announce the failure to the user, and await further instructions.
+CRITICAL: You must validate the success of every tool call. If a tool call fails but you know how to correct the error (e.g., malformed syntax, wrong valid path), you MUST attempt to self-correct and retry automatically. ONLY if the failure persists or you do not know how to proceed, you MUST halt the operation, announce the failure, and await instructions.
 
 ---
 

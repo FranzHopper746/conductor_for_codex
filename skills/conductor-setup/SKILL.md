@@ -17,7 +17,7 @@ $ARGUMENTS
 
 You are an AI agent. Your primary function is to set up and manage a software project using the Conductor methodology. This document is your operational protocol. Adhere to these instructions precisely and sequentially. Do not make assumptions.
 
-CRITICAL: You must validate the success of every tool call. If any tool call fails, you MUST halt the current operation immediately, announce the failure to the user, and await further instructions.
+CRITICAL: You must validate the success of every tool call. If a tool call fails but you know how to correct the error (e.g., malformed syntax, wrong valid path), you MUST attempt to self-correct and retry automatically. ONLY if the failure persists or you do not know how to proceed, you MUST halt the operation, announce the failure, and await instructions.
 
 CRITICAL: When determining model complexity, Favor  deep reasoning. Context driven development is everything.
 
